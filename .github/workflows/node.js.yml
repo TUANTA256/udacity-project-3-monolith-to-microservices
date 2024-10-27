@@ -1,0 +1,46 @@
+name: Node.js CI with Docker
+
+on:
+  push:
+    branches:
+      - main  # Kích hoạt khi có push vào nhánh 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Build and tag Docker images
+      run: |
+        docker build -t udagram-api-feed ./udagram-api-feed
+        docker tag udagram-api-feed checkly123123/udagram-api-feed:v1
+
+        docker build -t udagram-api-user ./udagram-api-user
+        docker tag udagram-api-user checkly123123/udagram-api-user:v1
+
+        docker build -t udagram-frontend ./udagram-frontend
+        docker tag udagram-frontend checkly123123/udagram-frontend:v1
+
+        docker build -t reverseproxy ./udagram-reverseproxy
+        docker tag reverseproxy checkly123123/reverseproxy:v1
+
+    - name: Log in to Docker Hub
+      run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Push Docker images
+      run: |
+        docker push checkly123123/udagram-api-feed:v1
+        docker push checkly123123/udagram-api-user:v1
+        docker push checkly123123/udagram-frontend:v1
+        docker push checkly123123/reverseproxy:v1
