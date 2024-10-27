@@ -33,10 +33,10 @@ jobs:
         docker tag reverseproxy checkly123123/reverseproxy:v1
 
     - name: Log in to Docker Hub
-      run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
     - name: Push Docker images
       run: |
