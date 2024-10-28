@@ -1,12 +1,14 @@
 apiVersion: v1
 kind: ConfigMap
+metadata:
+  name: config-secret
 data:
-  AWS_BUCKET: monolith-to-microservices
+  AWS_BUCKET: arn:aws:s3:::udacity-project-3-refactor-monolith
   AWS_PROFILE: default
   AWS_REGION: us-east-1
-  JWT_SECRET: test_jw
+  JWT_SECRET: testing
   POSTGRES_DB: postgres
-  POSTGRES_HOST: database-1.cu5to1ssob9g.us-east-1.rds.amazonaws.com
+  POSTGRES_HOST: database-udacity-project-3.cw1alsse1jfe.us-east-1.rds.amazonaws.com
   URL: http://localhost:8100  
 metadata:
   name: env-config
